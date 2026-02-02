@@ -7,7 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "deploy": "pnpm build && wrangler deploy --config dist/server/wrangler.json",
+    "deploy": "pnpm build && wrangler pages deploy dist/client --project-name=react-playground",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
