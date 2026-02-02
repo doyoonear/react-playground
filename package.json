@@ -7,7 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "deploy": "pnpm build && wrangler deploy --config dist/server/wrangler.json",
+    "deploy": "pnpm build && wrangler deploy --config wrangler.jsonc",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
