@@ -3,5 +3,8 @@
   "name": "react-playground",
   "compatibility_date": "2025-02-01",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry"
+  "main": "dist/server/server.js",
+  "assets": {
+    "directory": "dist/client"
+  }
 }
