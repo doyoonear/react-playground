@@ -1,0 +1,10 @@
+{
+  "name": "@react-playground/config",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tailwind": "./tailwind.config.base.js",
+    "./postcss": "./postcss.config.base.js"
+  }
+}
