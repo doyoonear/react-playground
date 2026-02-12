@@ -4,25 +4,24 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import { fileURLToPath, URL } from 'url'
-// import { cloudflare } from '@cloudflare/vite-plugin'
 
 const config = defineConfig({
   server: {
-    port: 3000,
+    port: 3001,
   },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  ssr: {
+    noExternal: ['@tanstack/react-start'],
+  },
   plugins: [
     devtools(),
     viteTsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
-    // cloudflare({
-    //   viteEnvironment: { name: 'ssr' },
-    // }),
     tanstackStart(),
     viteReact(),
   ],

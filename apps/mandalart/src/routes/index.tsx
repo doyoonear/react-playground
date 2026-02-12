@@ -1,15 +1,32 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useMandalartStore } from '../stores/mandalart'
-import { useState } from 'react'
+import { useAuthStore } from '../stores/auth'
+import { useState, useEffect } from 'react'
 
-export const Route = createFileRoute('/mandalart')({ component: Mandalart })
+export const Route = createFileRoute('/')({ component: Mandalart })
 
 function Mandalart() {
-  const { data, updateMetadata, updateCell, resetSection, resetAll } = useMandalartStore()
+  const { data, updateMetadata, updateCell, resetSection, resetAll, loadFromServer } = useMandalartStore()
+  const { user, checkAuth } = useAuthStore()
   const [editingCell, setEditingCell] = useState<string | null>(null)
   const [tempValue, setTempValue] = useState('')
   const [hoveredSection, setHoveredSection] = useState<number | null>(null)
   const [showSaveMessage, setShowSaveMessage] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  useEffect(() => {
+    const init = async () => {
+      await checkAuth()
+      setIsInitialized(true)
+    }
+    init()
+  }, [checkAuth])
+
+  useEffect(() => {
+    if (isInitialized && user) {
+      loadFromServer()
+    }
+  }, [isInitialized, user, loadFromServer])
 
   const handleCellClick = (cellId: string, currentValue: string) => {
     setEditingCell(cellId)
@@ -30,8 +47,7 @@ function Mandalart() {
   }
 
   const handleBlur = () => {
-    // 모바일에서만 포커스를 잃으면 자동 저장
-    if (window.innerWidth < 640) { // sm breakpoint
+    if (window.innerWidth < 640) {
       handleSave()
     }
   }
@@ -54,19 +70,17 @@ function Mandalart() {
   const getCellColor = (sectionIndex: number, cellIndex: number) => {
     const isCenter = cellIndex === 4
 
-    // 5번째 섹션 (sectionIndex 4)의 색상
     if (sectionIndex === 4) {
       if (isCenter) {
-        return 'bg-[#FFD8DF]' // 가운데는 핑크색
+        return 'bg-[#FFD8DF]'
       }
-      return 'bg-[#e8f5d0]' // 가운데 제외한 나머지는 연두색
+      return 'bg-[#e8f5d0]'
     }
 
-    // 다른 섹션들
     if (isCenter) {
-      return 'bg-[#e8f5d0]' // 각 섹션의 가운데는 연두색
+      return 'bg-[#e8f5d0]'
     }
-    return 'bg-white' // 나머지는 흰색
+    return 'bg-white'
   }
 
   const handleResetSection = (sectionIndex: number, e: React.MouseEvent) => {
@@ -189,6 +203,11 @@ function Mandalart() {
   return (
     <div className="min-h-screen bg-[#fffef7] py-4 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
+        {!user && (
+          <div className="mb-4 bg-blue-50 border border-blue-200 rounded-md p-3 text-sm text-blue-800">
+            💡 로그인하시면 다른 기기에서도 만다라트를 확인할 수 있습니다.
+          </div>
+        )}
         <div className="mb-4 space-y-2">
           <div className="flex flex-col sm:flex-row gap-2">
             <div className="flex-1 flex items-end gap-1">
