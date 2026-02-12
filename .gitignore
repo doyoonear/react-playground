@@ -1,13 +1,11 @@
 node_modules
 .DS_Store
 dist
-dist-ssr
 *.local
-count.txt
 .env
-.nitro
+.dev.vars
 .tanstack
 .wrangler
 .output
 .vinxi
-todos.json
+.nitro
